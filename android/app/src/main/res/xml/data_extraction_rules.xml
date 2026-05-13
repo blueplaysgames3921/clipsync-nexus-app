@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  android/app/src/main/res/xml/data_extraction_rules.xml
+  Prevent clipboard database and keys from being included in
+  Android Auto Backup or cloud restore — security requirement.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Exclude everything — clipboard data is private -->
+        <exclude domain="root" />
+        <exclude domain="file" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+    </cloud-backup>
+    <device-transfer>
+        <!-- Allow device-to-device transfer of settings only, not clip data -->
+        <exclude domain="database" path="clipsync_nexus.db" />
+        <exclude domain="root"     path="blobs/" />
+        <include domain="sharedpref" path="app_settings.xml" />
+    </device-transfer>
+</data-extraction-rules>

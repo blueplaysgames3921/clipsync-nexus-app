@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  android/app/src/main/res/xml/network_security_config.xml
+  Permits cleartext HTTP only for Teleport local-network peer communication.
+  All other traffic must use HTTPS/TLS.
+-->
+<network-security-config>
+
+    <!-- Default: require TLS for all external traffic -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Local network (Teleport P2P): allow cleartext on RFC-1918 ranges -->
+    <!-- In production, Teleport uses self-signed mutual TLS on a custom port.
+         This rule is a fallback for development/debugging only. -->
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- IPv4 private ranges -->
+        <domain includeSubdomains="false">192.168.0.0</domain>
+        <domain includeSubdomains="false">10.0.0.0</domain>
+        <domain includeSubdomains="false">172.16.0.0</domain>
+        <!-- localhost for testing -->
+        <domain includeSubdomains="false">localhost</domain>
+        <domain includeSubdomains="false">127.0.0.1</domain>
+    </domain-config>
+
+</network-security-config>
